@@ -5,7 +5,7 @@ Este repositório contém o backend para um sistema de gerenciamento de produtos
 ## Funcionalidades
 
 - **Gerenciamento de Produtos**: Adicionar, atualizar, deletar e listar produtos.
-- **Imagens de Produtos**: Adicionar e remover imagens de produtos, incluindo uma imagem de capa(cover).
+- **Imagens de Produtos**: Adicionar e remover imagens de produtos, incluindo uma imagem de capa.
 - **Favoritos**: Adicionar e remover produtos dos favoritos dos usuários.
 - **Avaliações**: Adicionar e listar avaliações dos produtos feitas pelos usuários.
 
