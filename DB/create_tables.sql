@@ -1,4 +1,3 @@
--- Criação da tabela de usuários
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
@@ -11,7 +10,6 @@ CREATE TABLE IF NOT EXISTS users (
   createdAt DATETIME NOT NULL
 );
 
--- Criação da tabela de pedidos
 CREATE TABLE IF NOT EXISTS orders (
   id INT AUTO_INCREMENT PRIMARY KEY,
   data_pedido DATETIME NOT NULL,
@@ -19,14 +17,12 @@ CREATE TABLE IF NOT EXISTS orders (
   FOREIGN KEY (order_user_id) REFERENCES users(id)
 );
 
--- Criação da tabela de categorias
 CREATE TABLE IF NOT EXISTS category (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(45) NOT NULL,
   descricao VARCHAR(45) NOT NULL
 );
 
--- Criação da tabela de produtos
 CREATE TABLE IF NOT EXISTS products (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(45) NULL,
@@ -35,12 +31,11 @@ CREATE TABLE IF NOT EXISTS products (
   data_fabricacao DATE NOT NULL,
   valor FLOAT NOT NULL,
   cat_id INT NOT NULL,
-  status  gENUM ('Novo', 'UltimAs unidades', 'Promoção'),
+  status  ENUM ('Novo', 'Últimas unidades', 'Promoção'),
   image_type ENUM('cover', 'other') NOT NULL, 
   FOREIGN KEY (cat_id) REFERENCES category(id)
 );
 
--- Criação da tabela de produtos em pedidos
 CREATE TABLE IF NOT EXISTS requests_products (
   pedido_id INT,
   produto_id INT,
@@ -50,7 +45,6 @@ CREATE TABLE IF NOT EXISTS requests_products (
   FOREIGN KEY (produto_id) REFERENCES products(id)
 );
 
--- Criação da tabela de recuperação de senhas
 CREATE TABLE IF NOT EXISTS password_resets (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
@@ -59,7 +53,6 @@ CREATE TABLE IF NOT EXISTS password_resets (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- Criação da tabela de tokens
 CREATE TABLE IF NOT EXISTS tokens (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
@@ -68,7 +61,6 @@ CREATE TABLE IF NOT EXISTS tokens (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
---Criação da tabela favorites
 CREATE TABLE IF NOT EXISTS favorites(
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
@@ -78,9 +70,8 @@ CREATE TABLE IF NOT EXISTS favorites(
   UNIQUE (user_id, product_id)
 );
 
---Criação da tabela reviews
 CREATE TABLE IF NOT EXISTS reviews(
-  id INT AUTO_INCREMENT NOT NULL,
+  id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   product_id INT NOT NULL,
   user_id INT NOT NULL,
   rating INT NOT NULL CHECK(rating>=1 AND  rating<=5),
@@ -90,7 +81,6 @@ CREATE TABLE IF NOT EXISTS reviews(
 );
 
 
--- Insere um novo usuário apenas se a tabela de usuários estiver vazia
 INSERT INTO users (
   nome, 
   data_nascimento, 
