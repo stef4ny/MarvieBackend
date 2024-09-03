@@ -44,7 +44,7 @@ exports.getOrdersById = (req, res) => {
 exports.putOrders =  (req, res) => {
     const id = req.params.id;
     const {data_pedido,ped_usu_id} = req.body;
-    db.query('UPADATE requests SET data_pedido = ?, ped_usu_id = ?', [data_pedido,ped_usu_id,id], (err,result) => {
+    db.query('UPADATE orders SET data_pedido = ?, ped_usu_id = ?', [data_pedido,ped_usu_id,id], (err,result) => {
         if(err){
           res.status(500).send(err.message);
           return;
@@ -59,7 +59,7 @@ exports.putOrders =  (req, res) => {
 
 exports.deleteOrders = (req, res) =>{
     const id = req.params.id;
-    db.query('DELETE FROM requests WHERE id = ?', [id], (err, result) => {
+    db.query('DELETE FROM orders WHERE id = ?', [id], (err, result) => {
       if(err){
         res.status(500).send(err.message);
         return;
