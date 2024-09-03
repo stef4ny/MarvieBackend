@@ -72,7 +72,7 @@ exports.deleteOrders = (req, res) =>{
     })
   }
 
-exports.putOreders =  (req, res) =>{
+exports.putOrders =  (req, res) =>{
   const {pedido_id, produto_id} = req.params;
   const {quantidade} = req.body;
   const sql = 'UPDATE requests_products SET quantidade = ? WHERE pedido_id = ? AND produto_id = ?';
