@@ -53,7 +53,7 @@ exports.putProducts = (req, res) => {
   );
 };
 
-exports.delete = (req, res) => {
+exports.deleteProducts = (req, res) => {
   const id = req.params.id;
   db.query("DELETE FROM products WHERE id = ?", [id], (err, results) => {
     if (err) {
