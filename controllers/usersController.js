@@ -107,7 +107,7 @@ exports.createUser = (req, res) => {
 
     const sql = 'INSERT INTO users (nome, email, senha, data_nascimento, telefone, cep, createdAt, numero) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     const values = [nome, email, hash, nascimento, telefone, CEP, createdAt, numero];
-    
+
     db.query(sql, values, (err, result) => {
       if (err) {
         console.error("Erro ao inserir usuário:", err.message);
@@ -116,5 +116,36 @@ exports.createUser = (req, res) => {
       }
       res.status(201).json({ id: result.insertId });
     });
+  });
+};
+
+exports.deleteUser = (req, res) => {
+  const id = req.params.id;
+  db.query('DELETE FROM users WHERE id = ?', [id], (err, result) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }
+    if (result.affectedRows === 0) {
+      res.status(404).send('Usuário não encontrado');
+      return;
+    }
+    res.sendStatus(204);
+  });
+};
+
+exports.putUser = (req, res) => {
+  const id = req.params.id;
+  const { nome, email, telefone, data_nascimento, cep, numero } = req.body;
+  db.query('UPDATE users SET nome = ?, email = ?, telefone = ?, data_nascimento = ?, cep = ?, numero = ? WHERE id = ?', [nome, email, telefone, data_nascimento, cep, numero, id], (err, result) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }
+    if (result.affectedRows === 0) {
+      res.status(404).send('Usuário não encontrado');
+      return;
+    }
+    res.sendStatus(204);
   });
 };
