@@ -21,10 +21,11 @@ exports.getProductById = (req, res) => {
 };
 
 exports.createProduct = (req, res) => {
-  const { nome, descricao, estoque, valor, cat_id, status } = req.body;
+  const { nome, descricao, estoque, valor, cat_id, status, image_id } = req.body;
+  const imageIdJson = Array.isArray(image_id) ? JSON.stringify(image_id) : image_id;
   const sql =
-    "INSERT INTO products (nome, descricao, estoque, valor, cat_id, status) VALUES (?,?,?,?,?,?)";
-  const values = [nome, descricao, estoque, valor, cat_id, status];
+    "INSERT INTO products (nome, descricao, estoque, valor, cat_id, status, image_id) VALUES (?,?,?,?,?,?,?)";
+  const values = [nome, descricao, estoque, valor, cat_id, status, imageIdJson];
   db.query(sql, values, (err, results) => {
     if (err) {
       res.status(500).send(err.message);
@@ -36,10 +37,13 @@ exports.createProduct = (req, res) => {
 
 exports.putProduct = (req, res) => {
   const id = req.params.id;
-  const { nome, descricao, estoque, valor, cat_id, status } = req.body;
+  const { nome, descricao, estoque, valor, cat_id, status, image_id } = req.body;
+  
+  const imageIdJson = Array.isArray(image_id) ? JSON.stringify(image_id) : image_id;
+
   db.query(
-    "UPDATE products SET nome = ?, descricao = ?, estoque = ?, valor = ?, cat_id = ?, status = ?",
-    [nome, descricao, estoque, valor, cat_id, status, id],
+    "UPDATE products SET nome = ?, descricao = ?, estoque = ?, valor = ?, cat_id = ?, status = ?, image_id = ? WHERE id = ?",
+    [nome, descricao, estoque, valor, cat_id, status, imageIdJson, id],
     (err, results) => {
       if (err) {
         res.status(500).send(err.message);

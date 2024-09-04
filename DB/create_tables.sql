@@ -25,13 +25,14 @@ CREATE TABLE IF NOT EXISTS category (
 
 CREATE TABLE IF NOT EXISTS products (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(45) NULL,
+  nome VARCHAR(45) NOT NULL,
   descricao VARCHAR(255) NOT NULL,
   estoque INT NOT NULL,
   valor FLOAT NOT NULL,
   cat_id INT NOT NULL,
-  status  ENUM ('Novidade', 'Últimas unidades', 'Promoção'),
-  image_type ENUM('cover', 'other') NOT NULL
+  status ENUM ('Novidade', 'Últimas unidades', 'Promoção'),
+  image_id JSON
+  -- image_type ENUM('cover', 'other') NOT NULL
   -- FOREIGN KEY (cat_id) REFERENCES category(id)
 );
 
