@@ -3,14 +3,9 @@ const router = express.Router();
 const productsController = require("../controllers/productsController");
 
 router.get("/", productsController.getProducts);
-
-// router.post('/product-images/add', productsController.addProductImage);
-// router.post('/product-images/remove', productsController.removeProductImage);
-
-// router.post('/favorites/add', productsController.addFavorite);
-// router.post('/favorites/remove', productsController.removeFavorite);
-
-// router.post('/reviews/add', productsController.addReview);
-// router.get('/reviews/:product_id', productsController.getProductReviews);
+router.get("/:id", productsController.getProductById);
+router.post('/', productsController.createProduct);
+router.put('/:id', productsController.putProduct);
+router.delete('/:id', productsController.deleteProduct);
 
 module.exports = router;

@@ -26,24 +26,23 @@ CREATE TABLE IF NOT EXISTS category (
 CREATE TABLE IF NOT EXISTS products (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(45) NULL,
-  descricao VARCHAR(45) NOT NULL,
+  descricao VARCHAR(255) NOT NULL,
   estoque INT NOT NULL,
-  data_fabricacao DATE NOT NULL,
   valor FLOAT NOT NULL,
   cat_id INT NOT NULL,
-  status  ENUM ('Novo', 'Últimas unidades', 'Promoção'),
-  image_type ENUM('cover', 'other') NOT NULL, 
-  FOREIGN KEY (cat_id) REFERENCES category(id)
+  status  ENUM ('Novidade', 'Últimas unidades', 'Promoção'),
+  image_type ENUM('cover', 'other') NOT NULL
+  -- FOREIGN KEY (cat_id) REFERENCES category(id)
 );
 
-CREATE TABLE IF NOT EXISTS requests_products (
-  pedido_id INT,
-  produto_id INT,
-  quantidade INT NOT NULL,
-  PRIMARY KEY (pedido_id, produto_id),
-  FOREIGN KEY (pedido_id) REFERENCES orders(id),
-  FOREIGN KEY (produto_id) REFERENCES products(id)
-);
+-- CREATE TABLE IF NOT EXISTS requests_products (
+--   pedido_id INT,
+--   produto_id INT,
+--   quantidade INT NOT NULL,
+--   PRIMARY KEY (pedido_id, produto_id),
+--   FOREIGN KEY (pedido_id) REFERENCES orders(id),
+--   FOREIGN KEY (produto_id) REFERENCES products(id)
+-- );
 
 CREATE TABLE IF NOT EXISTS password_resets (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -61,24 +60,15 @@ CREATE TABLE IF NOT EXISTS tokens (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE IF NOT EXISTS favorites(
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT NOT NULL,
-  product_id INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (product_id) REFERENCES products(id),
-  UNIQUE (user_id, product_id)
-);
-
-CREATE TABLE IF NOT EXISTS reviews(
-  id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-  product_id INT NOT NULL,
-  user_id INT NOT NULL,
-  rating INT NOT NULL CHECK(rating>=1 AND  rating<=5),
-  create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (product_id) REFERENCES products(id),
-  FOREIGN KEY (user_id) REFERENCES users(id)
-);
+-- CREATE TABLE IF NOT EXISTS reviews(
+--   id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+--   product_id INT NOT NULL,
+--   user_id INT NOT NULL,
+--   rating INT NOT NULL CHECK(rating>=1 AND  rating<=5),
+--   create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--   FOREIGN KEY (product_id) REFERENCES products(id),
+--   FOREIGN KEY (user_id) REFERENCES users(id)
+-- );
 
 
 INSERT INTO users (

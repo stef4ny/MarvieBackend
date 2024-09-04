@@ -19,7 +19,7 @@ exports.requestPasswordReset = (req, res) => {
 
     const userId = results[0].id;
     const token = crypto.randomBytes(32).toString("hex");
-    const expiresAt = new Date(Date.now() + 3600000);
+    const expiresAt = new Date(Date.now() + 3 * 3600000);
 
     db.query(
       "INSERT INTO password_resets (user_id, token, expires_at) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE token = VALUES(token), expires_at = VALUES(expires_at)",
@@ -30,7 +30,7 @@ exports.requestPasswordReset = (req, res) => {
           return res.status(500).send(err.message);
         }
 
-        const resetUrl = `http://localhost:5173/reset_password/${token}`;
+        const resetUrl = `https://marvie.vercel.app/reset_password/${token}`;
 
         transporter.sendMail({
           from: `"Marvie ❄" <${process.env.EMAIL_USER}>`,
@@ -53,7 +53,7 @@ exports.requestPasswordReset = (req, res) => {
 exports.resetPassword = (req, res) => {
   const { token, newPassword } = req.body;
 
-  db.query("SELECT user_id FROM password_resets WHERE token = ? AND expires_at > NOW()", [token], (err, results) => {
+  db.query("SELECT user_id FROM password_resets WHERE token = ?", [token], (err, results) => {
     if (err) {
       console.error("Erro ao buscar token de recuperação:", err.message);
       return res.status(500).send(err.message);
@@ -83,7 +83,19 @@ exports.resetPassword = (req, res) => {
             return res.status(500).send(err.message);
           }
 
-          res.status(200).send("Senha redefinida com sucesso");
+          transporter.sendMail({
+            from: `"Marvie ❄" <${process.env.EMAIL_USER}>`,
+            to: email,
+            subject: "Recuperação Realizada",
+            text: `Sua senha foi redefinida com sucesso!`,
+            html: `<p>Sua senha foi redefinida com sucesso!</p>`,
+          }, (error) => {
+            if (error) {
+              console.error("Erro ao redefinir senha:", error.message);
+              return res.status(500).send(error.message);
+            }
+            res.status(200).send("Senha redefinida com sucesso");
+          });
         });
       });
     });

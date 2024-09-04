@@ -5,6 +5,8 @@ const verifyJWT = require("../config/auth");
 
 router.post("/", verifyJWT, usersController.createUser);
 router.get("/", verifyJWT, usersController.getUsers);
+router.delete("/:id", verifyJWT, usersController.deleteUser);
+router.put("/:id", verifyJWT, usersController.putUser);
 router.get("/:id", verifyJWT, usersController.getUserById);
 router.post("/login", usersController.login);
 
