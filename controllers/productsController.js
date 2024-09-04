@@ -7,7 +7,6 @@ exports.getProducts = (req, res) => {
     }
     res.json(results);
   });
-
 };
 
 exports.getProductById = (req, res) => {
@@ -19,22 +18,13 @@ exports.getProductById = (req, res) => {
     }
     res.json(results);
   });
-
 };
 
 exports.createProduct = (req, res) => {
-  const { nome, descricao, estoque, valor, cat_id, status } =
-    req.body;
+  const { nome, descricao, estoque, valor, cat_id, status } = req.body;
   const sql =
     "INSERT INTO products (nome, descricao, estoque, valor, cat_id, status) VALUES (?,?,?,?,?,?)";
-  const values = [
-    nome,
-    descricao,
-    estoque,
-    valor,
-    cat_id,
-    status,
-  ];
+  const values = [nome, descricao, estoque, valor, cat_id, status];
   db.query(sql, values, (err, results) => {
     if (err) {
       res.status(500).send(err.message);
@@ -46,8 +36,7 @@ exports.createProduct = (req, res) => {
 
 exports.putProduct = (req, res) => {
   const id = req.params.id;
-  const { nome, descricao, estoque, valor, cat_id, status } =
-    req.body;
+  const { nome, descricao, estoque, valor, cat_id, status } = req.body;
   db.query(
     "UPDATE products SET nome = ?, descricao = ?, estoque = ?, valor = ?, cat_id = ?, status = ?",
     [nome, descricao, estoque, valor, cat_id, status, id],
@@ -65,11 +54,7 @@ exports.putProduct = (req, res) => {
   );
 };
 
-
 exports.deleteProduct = (req, res) => {
-
-
-
   const id = req.params.id;
   db.query("DELETE FROM products WHERE id = ?", [id], (err, results) => {
     if (err) {
