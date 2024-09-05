@@ -136,8 +136,8 @@ exports.deleteUser = (req, res) => {
 
 exports.putUser = (req, res) => {
   const id = req.params.id;
-  const { nome, email, telefone, data_nascimento, cep, numero } = req.body;
-  db.query('UPDATE users SET nome = ?, email = ?, telefone = ?, data_nascimento = ?, cep = ?, numero = ? WHERE id = ?', [nome, email, telefone, data_nascimento, cep, numero, id], (err, result) => {
+  const { nome, email, telefone, cep, numero } = req.body;
+  db.query('UPDATE users SET nome = ?, email = ?, telefone = ?, cep = ?, numero = ? WHERE id = ?', [nome, email, telefone, cep, numero, id], (err, result) => {
     if (err) {
       res.status(500).send(err.message);
       return;
