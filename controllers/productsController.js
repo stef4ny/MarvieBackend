@@ -72,3 +72,38 @@ exports.deleteProduct = (req, res) => {
     res.sendStatus(204);
   });
 };
+
+exports.getTotalOrders = (req, res) => {
+  db.query("SELECT COUNT(*) AS totalOrders FROM orders", (err, results) => {
+    if (err) {
+      return res.status(500).send(err.message);
+    }
+    res.json(results[0]);
+  });
+};
+
+exports.getTotalProducts = (req, res) => {
+  db.query("SELECT COUNT(*) AS totalProducts FROM products", (err, results) => {
+    if (err) {
+      return res.status(500).send(err.message);
+    }
+    res.json(results[0]);
+  });
+};
+
+exports.getTotalUsers = (req, res) => {
+  db.query("SELECT COUNT(*) AS totalClients FROM users", (err, results) => {
+    if (err) {
+      return res.status(500).send(err.message);
+    }
+    res.json(results[0]);
+  });
+};
+
+exports.getOutOfStockProducts = (req, res) => {
+  db.query("SELECT * FROM products WHERE estoque = 0", (err, results) => {
+    if (err) {
+      return res.status(500).send(err.message);
+    }
+    res.json(results);
+  });
