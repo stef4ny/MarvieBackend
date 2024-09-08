@@ -1,7 +1,9 @@
+-- SET time_zone = 'America/Sao_Paulo';
+
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
-  data_nascimento DATE NOT NULL,
+  data_nascimento DATE,
   email VARCHAR(255) NOT NULL UNIQUE,
   telefone VARCHAR(20) NOT NULL,
   cep VARCHAR(10) NOT NULL,
@@ -19,19 +21,22 @@ CREATE TABLE IF NOT EXISTS orders (
 
 CREATE TABLE IF NOT EXISTS category (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(45) NOT NULL,
-  descricao VARCHAR(45) NOT NULL
+  nome VARCHAR(255) NOT NULL,
+  descricao VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS products (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(45) NOT NULL,
+  nome VARCHAR(255) NOT NULL,
   descricao VARCHAR(255) NOT NULL,
   estoque INT NOT NULL,
   valor FLOAT NOT NULL,
   cat_id INT NOT NULL,
   status ENUM ('Novidade', 'Últimas unidades', 'Promoção'),
-  image_id JSON
+  image_id JSON,
+  reviews JSON,
+  sizes JSON,
+  colors JSON
   -- image_type ENUM('cover', 'other') NOT NULL
   -- FOREIGN KEY (cat_id) REFERENCES category(id)
 );
@@ -70,6 +75,16 @@ CREATE TABLE IF NOT EXISTS tokens (
 --   FOREIGN KEY (product_id) REFERENCES products(id),
 --   FOREIGN KEY (user_id) REFERENCES users(id)
 -- );
+
+CREATE TABLE IF NOT EXISTS reviews (
+  id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  product_id INT NOT NULL,
+  username VARCHAR(255),
+  rating INT NOT NULL CHECK(rating >= 1 AND rating <= 5),
+  review VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (product_id) REFERENCES products(id)
+);
 
 
 INSERT INTO users (
