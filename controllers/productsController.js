@@ -5,7 +5,7 @@ exports.getProducts = (req, res) => {
     if (err) {
       return res.status(500).send(err.message);
     }
-    res.json(results);
+   
   });
 };
 
@@ -135,6 +135,7 @@ exports.getOutOfStockProducts = (req, res) => {
   db.query("SELECT * FROM products WHERE estoque = 0", (err, results) => {
     if (err) {
       return res.status(500).send(err.message);
-    }
-    res.json(results);
+    }  
+     res.json(results);
   });
+};
