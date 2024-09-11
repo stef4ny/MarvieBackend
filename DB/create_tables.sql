@@ -1,14 +1,12 @@
--- SET time_zone = 'America/Sao_Paulo';
-
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
   data_nascimento DATE,
   email VARCHAR(255) NOT NULL UNIQUE,
-  telefone VARCHAR(20) NOT NULL,
+  telefone VARCHAR(20),
   cep VARCHAR(10) NOT NULL,
   senha VARCHAR(255) NOT NULL,
-  numero VARCHAR(10) NOT NULL,
+  numero VARCHAR(10),
   createdAt DATETIME NOT NULL
 );
 
@@ -16,7 +14,8 @@ CREATE TABLE IF NOT EXISTS orders (
   id INT AUTO_INCREMENT PRIMARY KEY,
   data_pedido DATETIME NOT NULL,
   order_user_id INT NOT NULL,
-  FOREIGN KEY (order_user_id) REFERENCES users(id)
+  final_total DECIMAL(10, 2) NOT NULL,
+  cart JSON
 );
 
 CREATE TABLE IF NOT EXISTS category (
@@ -37,18 +36,7 @@ CREATE TABLE IF NOT EXISTS products (
   reviews JSON,
   sizes JSON,
   colors JSON
-  -- image_type ENUM('cover', 'other') NOT NULL
-  -- FOREIGN KEY (cat_id) REFERENCES category(id)
 );
-
--- CREATE TABLE IF NOT EXISTS requests_products (
---   pedido_id INT,
---   produto_id INT,
---   quantidade INT NOT NULL,
---   PRIMARY KEY (pedido_id, produto_id),
---   FOREIGN KEY (pedido_id) REFERENCES orders(id),
---   FOREIGN KEY (produto_id) REFERENCES products(id)
--- );
 
 CREATE TABLE IF NOT EXISTS password_resets (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -65,16 +53,6 @@ CREATE TABLE IF NOT EXISTS tokens (
   expires_at DATETIME NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
-
--- CREATE TABLE IF NOT EXISTS reviews(
---   id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
---   product_id INT NOT NULL,
---   user_id INT NOT NULL,
---   rating INT NOT NULL CHECK(rating>=1 AND  rating<=5),
---   create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---   FOREIGN KEY (product_id) REFERENCES products(id),
---   FOREIGN KEY (user_id) REFERENCES users(id)
--- );
 
 CREATE TABLE IF NOT EXISTS reviews (
   id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
