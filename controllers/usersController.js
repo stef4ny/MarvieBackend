@@ -119,6 +119,28 @@ exports.createUser = (req, res) => {
   });
 };
 
+exports.createUserFromOrder = (req, res, callback) => {
+  const { nome, email, senha, CEP, createdAt } = req.body;
+
+  bcrypt.hash(senha, saltRounds, (err, hash) => {
+    if (err) {
+      console.error("Erro ao criptografar a senha:", err.message);
+      return callback(err);
+    }
+
+    const sql = 'INSERT INTO users (nome, email, senha, cep, createdAt) VALUES (?, ?, ?, ?, ?)';
+    const values = [nome, email, hash, CEP, createdAt];
+
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        console.error("Erro ao inserir usuário:", err.message);
+        return callback(err);
+      }
+      callback(null, result.insertId);
+    });
+  });
+};
+
 exports.deleteUser = (req, res) => {
   const id = req.params.id;
   db.query('DELETE FROM users WHERE id = ?', [id], (err, result) => {
