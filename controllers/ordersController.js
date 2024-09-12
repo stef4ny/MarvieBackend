@@ -56,11 +56,20 @@ exports.getOrdersById = (req, res) => {
     }
 
     const userId = decoded.userId;
-
     const orderId = req.params.id;
 
-    const sql = "SELECT * FROM orders WHERE id = ? AND order_user_id = ?";
-    db.query(sql, [orderId, userId], (err, results) => {
+    let sql;
+    let params;
+
+    if (userId === 1) {
+      sql = "SELECT * FROM orders WHERE id = ?";
+      params = [orderId];
+    } else {
+      sql = "SELECT * FROM orders WHERE id = ? AND order_user_id = ?";
+      params = [orderId, userId];
+    }
+
+    db.query(sql, params, (err, results) => {
       if (err) {
         console.error("Erro ao buscar pedido:", err.message);
         return res.status(500).send(err.message);
