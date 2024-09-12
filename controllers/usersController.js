@@ -58,6 +58,50 @@ exports.login = (req, res) => {
   });
 };
 
+exports.loginWithOrder = (loginData, callback) => {
+  const { email, senha } = loginData;
+
+  const sql = "SELECT id, senha, nome FROM users WHERE email = ?";
+  db.query(sql, [email], (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar usuário:", err.message);
+      return callback(err);
+    }
+
+    if (results.length === 0) {
+      return callback("Usuário não encontrado");
+    }
+
+    const hashedPassword = results[0].senha;
+    const userId = results[0].id;
+    const userName = results[0].nome;
+
+    bcrypt.compare(senha, hashedPassword, (err, isMatch) => {
+      if (err) {
+        console.error("Erro ao comparar senhas:", err.message);
+        return callback(err);
+      }
+
+      if (isMatch) {
+        const token = jwt.sign({ userId }, SECRET, { expiresIn: "1h" });
+        const expiresAt = moment().add(1, 'hour').toDate();
+
+        const insertTokenSql = "INSERT INTO tokens (user_id, token, expires_at) VALUES (?, ?, ?)";
+        db.query(insertTokenSql, [userId, token, expiresAt], (err) => {
+          if (err) {
+            console.error("Erro ao armazenar token:", err.message);
+            return callback(err);
+          }
+
+          return callback(null, token, userName);
+        });
+      } else {
+        return callback("Senha incorreta");
+      }
+    });
+  });
+};
+
 exports.getUserById = (req, res) => {
   const userId = req.params.id;
 

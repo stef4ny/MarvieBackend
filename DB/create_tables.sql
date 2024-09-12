@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS orders (
   data_pedido DATETIME NOT NULL,
   order_user_id INT NOT NULL,
   final_total DECIMAL(10, 2) NOT NULL,
-  cart JSON
+  cart JSON,
+  status INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS category (
