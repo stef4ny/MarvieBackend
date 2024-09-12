@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS orders (
   data_pedido DATETIME NOT NULL,
   order_user_id INT NOT NULL,
   final_total DECIMAL(10, 2) NOT NULL,
-  cart JSON
+  cart JSON,
+  status INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS category (
@@ -50,8 +51,8 @@ CREATE TABLE IF NOT EXISTS tokens (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
   token VARCHAR(255) NOT NULL,
-  expires_at DATETIME NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users(id)
+  expires_at DATETIME NOT NULL
+  -- FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS reviews (
